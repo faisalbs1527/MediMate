@@ -25,11 +25,12 @@ import com.example.medimate.R
 import com.example.medimate.ui.theme.MediMateTheme
 import com.example.medimate.ui.theme.black40
 import com.example.medimate.ui.theme.black80
+import com.example.medimate.ui.theme.gray
 
 @Composable
 fun Itemcard(modifier: Modifier = Modifier) {
     Card(
-        colors = CardDefaults.cardColors(Color(0xFFF7F5F5)),
+        colors = CardDefaults.cardColors(gray),
         modifier = Modifier.padding(start = 32.dp, end = 32.dp, top = 8.dp, bottom = 4.dp)
     ) {
         Row(modifier = Modifier.padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
