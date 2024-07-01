@@ -51,7 +51,7 @@ fun HomeScreen(modifier: Modifier = Modifier) {
                     icon = {
                         Icon(
                             Icons.Filled.Dashboard, contentDescription = "",
-                            tint = if (selectedItem.value == 0) green80 else Color(0xFF9B9B9B)
+                            tint = if (selectedItem.value == 0) green80 else black80
                         )
                     })
                 NavigationBarItem(
@@ -59,9 +59,10 @@ fun HomeScreen(modifier: Modifier = Modifier) {
                     onClick = { selectedItem.value = 1 },
                     icon = {
                         IconBox(
+                            onClick = {},
                             modifier = Modifier.size(56.dp),
                             colorContainer = green80,
-                            icon = Icons.Filled.Add,
+                            iconVector = Icons.Filled.Add,
                             colorIcon = Color.White,
                             iconSize = 30.dp
                         )
@@ -72,7 +73,7 @@ fun HomeScreen(modifier: Modifier = Modifier) {
                     icon = {
                         Icon(
                             Icons.Filled.Checklist, contentDescription = "",
-                            tint = if (selectedItem.value == 2) green80 else Color(0xFF9B9B9B)
+                            tint = if (selectedItem.value == 2) green80 else black80
                         )
                     })
             }
