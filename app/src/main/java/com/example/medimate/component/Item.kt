@@ -23,6 +23,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -87,6 +88,8 @@ fun Itemcard(modifier: Modifier = Modifier) {
 @Composable
 fun NameCard(
     modifier: Modifier = Modifier,
+    icon: Painter,
+    hint: String,
     onValueChange: (String) -> Unit
 ) {
     var name by remember {
@@ -94,16 +97,14 @@ fun NameCard(
     }
     Card(
         colors = CardDefaults.cardColors(gray),
-        modifier = Modifier
-            .padding(start = 28.dp, end = 28.dp, top = 8.dp, bottom = 4.dp)
-            .fillMaxWidth()
+        modifier = modifier
     ) {
         Row(
             modifier = Modifier.padding(start = 16.dp, end = 8.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Image(
-                painter = painterResource(id = R.drawable.madicine),
+                painter = icon,
                 contentDescription = "",
                 modifier = Modifier.size(20.dp)
             )
@@ -112,6 +113,7 @@ fun NameCard(
                 onValueChange = {
                     if (it.length <= 20) {
                         name = it
+                        onValueChange(it)
                     }
                 },
                 colors = TextFieldDefaults.colors(
@@ -122,7 +124,7 @@ fun NameCard(
                 ),
                 placeholder = {
                     Text(
-                        text = "Ex: Napa Extra", color = black80,
+                        text = hint, color = black80,
                         fontSize = 15.sp,
                         fontWeight = FontWeight(500)
                     )
@@ -138,7 +140,13 @@ private fun ViewItemCard() {
     MediMateTheme() {
         Column {
             Itemcard()
-            NameCard(onValueChange = {})
+            NameCard(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 28.dp, end = 28.dp, top = 8.dp, bottom = 4.dp),
+                icon = painterResource(id = R.drawable.madicine),
+                hint = "Ex: Napa Extra",
+                onValueChange = {})
         }
     }
 }

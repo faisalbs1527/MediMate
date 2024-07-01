@@ -1,12 +1,15 @@
 package com.example.medimate.screen
 
+import android.app.TimePickerDialog
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -17,6 +20,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -30,10 +34,28 @@ import com.example.medimate.component.NameCard
 import com.example.medimate.ui.theme.black40
 import com.example.medimate.ui.theme.black80
 import com.example.medimate.ui.theme.gray
+import com.example.medimate.ui.theme.green40
 import com.example.medimate.ui.theme.green80
+import java.util.Calendar
 
 @Composable
 fun AddMedicine(modifier: Modifier = Modifier) {
+
+    val mContext = LocalContext.current
+    val mCalendar = Calendar.getInstance()
+    val mHour = mCalendar[Calendar.HOUR_OF_DAY]
+    val mMinute = mCalendar[Calendar.MINUTE]
+
+    var Time by remember {
+        mutableStateOf("")
+    }
+
+    val mTimePickerDialog = TimePickerDialog(
+        mContext,
+        {_, mHour : Int, mMinute: Int ->
+            Time = "$mHour:$mMinute"
+        }, mHour, mMinute, false
+    )
 
     val selectedItem = remember {
         mutableStateOf(0)
@@ -87,6 +109,11 @@ fun AddMedicine(modifier: Modifier = Modifier) {
             color = black40
         )
         NameCard(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(start = 28.dp, end = 28.dp, top = 8.dp, bottom = 4.dp),
+            icon = painterResource(id = R.drawable.madicine),
+            hint = "Ex: Napa Extra",
             onValueChange = { Name = it }
         )
         Text(
@@ -175,10 +202,36 @@ fun AddMedicine(modifier: Modifier = Modifier) {
             fontWeight = FontWeight(500),
             color = black40
         )
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(start = 28.dp, end = 28.dp, top = 12.dp, bottom = 12.dp)
+        ) {
+            NameCard(
+                modifier = Modifier
+                    .weight(.7f)
+                    .padding(end = 8.dp),
+                icon = painterResource(id = R.drawable.notification),
+                hint = Time
+            ) {
+                Time = it
+            }
+            IconBox(
+                onClick = {mTimePickerDialog.show()},
+                modifier = Modifier
+                    .padding(start = 16.dp)
+                    .weight(.2f)
+                    .size(56.dp),
+                colorContainer = green40,
+                iconVector = Icons.Filled.Add,
+                colorIcon = green80,
+                iconSize = 40.dp
+            )
+        }
         CustomButton(
             onClick = {},
             modifier = Modifier
-                .padding(start = 28.dp, end = 28.dp, top = 10.dp)
+                .padding(start = 28.dp, end = 28.dp, top = 116.dp)
                 .size(width = 340.dp, height = 56.dp),
         )
     }
