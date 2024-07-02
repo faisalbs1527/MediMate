@@ -11,8 +11,12 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.material3.TimePicker
+import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -31,13 +35,17 @@ import com.example.medimate.component.CustomButton
 import com.example.medimate.component.DropDownCustom
 import com.example.medimate.component.IconBox
 import com.example.medimate.component.NameCard
+import com.example.medimate.component.TimePickerDialog
 import com.example.medimate.ui.theme.black40
 import com.example.medimate.ui.theme.black80
 import com.example.medimate.ui.theme.gray
 import com.example.medimate.ui.theme.green40
 import com.example.medimate.ui.theme.green80
+import java.text.SimpleDateFormat
 import java.util.Calendar
+import java.util.Date
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddMedicine(modifier: Modifier = Modifier) {
 
@@ -49,13 +57,9 @@ fun AddMedicine(modifier: Modifier = Modifier) {
     var Time by remember {
         mutableStateOf("")
     }
-
-    val mTimePickerDialog = TimePickerDialog(
-        mContext,
-        {_, mHour : Int, mMinute: Int ->
-            Time = "$mHour:$mMinute"
-        }, mHour, mMinute, false
-    )
+    var showTimePickerDialog by remember {
+        mutableStateOf(false)
+    }
 
     val selectedItem = remember {
         mutableStateOf(0)
@@ -217,7 +221,9 @@ fun AddMedicine(modifier: Modifier = Modifier) {
                 Time = it
             }
             IconBox(
-                onClick = {mTimePickerDialog.show()},
+                onClick = {
+                    showTimePickerDialog = true
+                },
                 modifier = Modifier
                     .padding(start = 16.dp)
                     .weight(.2f)
@@ -235,6 +241,47 @@ fun AddMedicine(modifier: Modifier = Modifier) {
                 .size(width = 340.dp, height = 56.dp),
         )
     }
+
+    // -----------------------------------------------------------------------------------
+    // Dialog
+    // -----------------------------------------------------------------------------------
+
+    if (showTimePickerDialog) {
+        val calendar = Calendar.getInstance()
+        val timePickerState =
+            rememberTimePickerState(
+                initialHour = mHour,
+                initialMinute = mMinute,
+                is24Hour = false,
+            )
+        TimePickerDialog(
+            onDismissRequest = {
+                showTimePickerDialog = false
+            },
+            confirmButton = {
+                TextButton(onClick = {
+                    val hour = timePickerState.hour
+                    val minute = timePickerState.minute
+                    val currentHour = mHour
+                    val currentMinute = mMinute
+
+                    Time = convert24HourTo12Hour("$hour:$minute")
+                    showTimePickerDialog = false
+                }) {
+                    Text(text = "Ok")
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = {
+                    showTimePickerDialog = false
+                }) {
+                    Text(text = "Cancel")
+                }
+            },
+        ) {
+            TimePicker(state = timePickerState)
+        }
+    }
 }
 
 @Preview
@@ -243,4 +290,16 @@ private fun ViewAddMedicine() {
     Surface(modifier = Modifier.fillMaxSize()) {
         AddMedicine()
     }
+}
+
+fun convert24HourTo12Hour(time24: String): String {
+    // Define the input and output date formats
+    val inputFormat = SimpleDateFormat("HH:mm")
+    val outputFormat = SimpleDateFormat("hh:mm a")
+
+    // Parse the input time string to a Date object
+    val date: Date? = inputFormat.parse(time24)
+
+    // Format the Date object to the desired output format
+    return outputFormat.format(date)
 }
