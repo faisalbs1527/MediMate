@@ -1,6 +1,5 @@
 package com.example.medimate.screen
 
-import android.app.TimePickerDialog
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -237,7 +236,7 @@ fun AddMedicine(modifier: Modifier = Modifier) {
         CustomButton(
             onClick = {},
             modifier = Modifier
-                .padding(start = 28.dp, end = 28.dp, top = 116.dp)
+                .padding(start = 28.dp, end = 28.dp, top = 40.dp)
                 .size(width = 340.dp, height = 56.dp),
         )
     }
