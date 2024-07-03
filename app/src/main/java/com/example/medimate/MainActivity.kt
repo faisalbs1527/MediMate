@@ -11,7 +11,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.example.medimate.screen.AddMedicine
 import com.example.medimate.screen.HomeScreen
 import com.example.medimate.ui.theme.MediMateTheme
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

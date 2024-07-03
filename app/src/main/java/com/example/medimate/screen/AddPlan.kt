@@ -1,5 +1,6 @@
 package com.example.medimate.screen
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -18,6 +19,7 @@ import androidx.compose.material3.TimePicker
 import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -29,12 +31,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.medimate.R
 import com.example.medimate.component.CustomButton
 import com.example.medimate.component.DropDownCustom
 import com.example.medimate.component.IconBox
 import com.example.medimate.component.NameCard
 import com.example.medimate.component.TimePickerDialog
+import com.example.medimate.db.model.reminderEntity
 import com.example.medimate.ui.theme.black40
 import com.example.medimate.ui.theme.black80
 import com.example.medimate.ui.theme.gray
@@ -47,6 +51,9 @@ import java.util.Date
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddMedicine(modifier: Modifier = Modifier) {
+
+    val viewModel: AddPlanViewModel = hiltViewModel()
+    val status by viewModel.status.observeAsState()
 
     val mContext = LocalContext.current
     val mCalendar = Calendar.getInstance()
@@ -215,10 +222,9 @@ fun AddMedicine(modifier: Modifier = Modifier) {
                     .weight(.7f)
                     .padding(end = 8.dp),
                 icon = painterResource(id = R.drawable.notification),
-                hint = Time
-            ) {
-                Time = it
-            }
+                hint = Time,
+                onValueChange = { Time = it }
+            )
             IconBox(
                 onClick = {
                     showTimePickerDialog = true
@@ -234,7 +240,20 @@ fun AddMedicine(modifier: Modifier = Modifier) {
             )
         }
         CustomButton(
-            onClick = {},
+            onClick = {
+                viewModel.addPlan(
+                    reminderEntity(
+                        pillName = Name,
+                        pillAmount = amount.toInt(),
+                        pillType = amountType,
+                        interval = howLong.toInt(),
+                        intervalType = howLongType,
+                        foodTiming = selectedItem.value,
+                        time = Time
+                    )
+                )
+                Toast.makeText(mContext, status, Toast.LENGTH_SHORT).show()
+            },
             modifier = Modifier
                 .padding(start = 28.dp, end = 28.dp, top = 40.dp)
                 .size(width = 340.dp, height = 56.dp),
