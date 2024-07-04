@@ -1,4 +1,4 @@
-package com.example.medimate.screen
+package com.example.medimate.screen.home
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Checklist
@@ -19,6 +20,9 @@ import androidx.compose.material3.SearchBar
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -28,6 +32,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.medimate.R
 import com.example.medimate.component.HomeBanner
 import com.example.medimate.component.IconBox
@@ -38,6 +43,14 @@ import com.example.medimate.ui.theme.green80
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(modifier: Modifier = Modifier) {
+
+    val viewModel: homeViewModel = hiltViewModel()
+    LaunchedEffect(key1 = Unit) {
+        viewModel.getReminders()
+    }
+
+    val status by viewModel.status.observeAsState()
+    val reminderList by viewModel.reminderList.observeAsState()
 
     val selectedItem = remember {
         mutableStateOf(0)
@@ -111,8 +124,12 @@ fun HomeScreen(modifier: Modifier = Modifier) {
                 fontWeight = FontWeight(500)
             )
             LazyColumn(modifier = Modifier.padding(top = 8.dp, bottom = 8.dp)) {
-                items(8) {
-                    Itemcard()
+                if(reminderList!=null){
+                    items(reminderList!!){ reminder->
+                        Itemcard(medicineName = reminder.pillName,
+                            reminderTime = reminder.time,
+                            status = "Pending")
+                    }
                 }
             }
         }

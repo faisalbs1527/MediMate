@@ -36,7 +36,12 @@ import com.example.medimate.ui.theme.black80
 import com.example.medimate.ui.theme.gray
 
 @Composable
-fun Itemcard(modifier: Modifier = Modifier) {
+fun Itemcard(
+    modifier: Modifier = Modifier,
+    medicineName: String,
+    reminderTime: String,
+    status: String
+) {
     Card(
         colors = CardDefaults.cardColors(gray),
         modifier = Modifier.padding(start = 32.dp, end = 32.dp, top = 8.dp, bottom = 4.dp)
@@ -49,7 +54,7 @@ fun Itemcard(modifier: Modifier = Modifier) {
             )
             Column(modifier = Modifier.padding(start = 12.dp)) {
                 Text(
-                    text = "MedicineName",
+                    text = medicineName,
                     color = black40,
                     fontSize = 16.sp,
                     fontWeight = FontWeight(500)
@@ -58,7 +63,7 @@ fun Itemcard(modifier: Modifier = Modifier) {
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = "10:00 AM", color = black80,
+                        text = reminderTime, color = black80,
                         fontSize = 13.sp,
                         fontWeight = FontWeight(500)
                     )
@@ -69,7 +74,7 @@ fun Itemcard(modifier: Modifier = Modifier) {
                             .background(color = black80, shape = CircleShape)
                     )
                     Text(
-                        text = "Completed", color = black80,
+                        text = status, color = black80,
                         fontSize = 13.sp,
                         fontWeight = FontWeight(500)
                     )
@@ -139,7 +144,11 @@ fun NameCard(
 private fun ViewItemCard() {
     MediMateTheme() {
         Column {
-            Itemcard()
+            Itemcard(
+                medicineName = "",
+                reminderTime = "",
+                status = ""
+            )
             NameCard(
                 modifier = Modifier
                     .fillMaxWidth()

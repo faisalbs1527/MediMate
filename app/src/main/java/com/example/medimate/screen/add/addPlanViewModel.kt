@@ -1,6 +1,5 @@
-package com.example.medimate.screen
+package com.example.medimate.screen.add
 
-import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel

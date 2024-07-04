@@ -1,4 +1,4 @@
-package com.example.medimate.screen
+package com.example.medimate.screen.add
 
 import android.widget.Toast
 import androidx.compose.foundation.layout.Column
@@ -60,7 +60,7 @@ fun AddMedicine(modifier: Modifier = Modifier) {
     val mHour = mCalendar[Calendar.HOUR_OF_DAY]
     val mMinute = mCalendar[Calendar.MINUTE]
 
-    var Time by remember {
+    var time by remember {
         mutableStateOf("")
     }
     var showTimePickerDialog by remember {
@@ -222,8 +222,8 @@ fun AddMedicine(modifier: Modifier = Modifier) {
                     .weight(.7f)
                     .padding(end = 8.dp),
                 icon = painterResource(id = R.drawable.notification),
-                hint = Time,
-                onValueChange = { Time = it }
+                hint = time,
+                onValueChange = { time = it }
             )
             IconBox(
                 onClick = {
@@ -249,7 +249,7 @@ fun AddMedicine(modifier: Modifier = Modifier) {
                         interval = howLong.toInt(),
                         intervalType = howLongType,
                         foodTiming = selectedItem.value,
-                        time = Time
+                        time = time
                     )
                 )
                 Toast.makeText(mContext, status, Toast.LENGTH_SHORT).show()
@@ -283,7 +283,7 @@ fun AddMedicine(modifier: Modifier = Modifier) {
                     val currentHour = mHour
                     val currentMinute = mMinute
 
-                    Time = convert24HourTo12Hour("$hour:$minute")
+                    time = convert24HourTo12Hour("$hour:$minute")
                     showTimePickerDialog = false
                 }) {
                     Text(text = "Ok")
