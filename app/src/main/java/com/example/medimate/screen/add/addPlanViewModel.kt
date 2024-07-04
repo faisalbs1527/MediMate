@@ -21,7 +21,6 @@ class AddPlanViewModel @Inject constructor(
 
     fun placeReminder(reminder: reminderEntity) = viewModelScope.launch {
         repo.saveToDatabase(reminder)
-        _status.value = "Reminder added Successful!!"
     }
 
     fun addPlan(reminder: reminderEntity) {
@@ -33,9 +32,11 @@ class AddPlanViewModel @Inject constructor(
             reminder.foodTiming != 0 &&
             reminder.time.isNotEmpty()
         ) {
-            print(reminder)
+            println(reminder)
+            _status.value = "Successful!!"
             placeReminder(reminder)
         } else {
+            println(reminder)
             _status.value = "Please Fill out all the fields!!"
         }
     }

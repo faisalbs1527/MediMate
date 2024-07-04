@@ -18,6 +18,7 @@ import androidx.compose.material3.TextButton
 import androidx.compose.material3.TimePicker
 import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
@@ -32,7 +33,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import com.example.medimate.R
+import com.example.medimate.Screen
 import com.example.medimate.component.CustomButton
 import com.example.medimate.component.DropDownCustom
 import com.example.medimate.component.IconBox
@@ -50,12 +53,13 @@ import java.util.Date
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AddMedicine(modifier: Modifier = Modifier) {
+fun AddMedicine(navController: NavController) {
 
     val viewModel: AddPlanViewModel = hiltViewModel()
     val status by viewModel.status.observeAsState()
 
     val mContext = LocalContext.current
+
     val mCalendar = Calendar.getInstance()
     val mHour = mCalendar[Calendar.HOUR_OF_DAY]
     val mMinute = mCalendar[Calendar.MINUTE]
@@ -75,18 +79,18 @@ fun AddMedicine(modifier: Modifier = Modifier) {
     }
 
     var amount by remember {
-        mutableStateOf("")
+        mutableStateOf("0")
     }
 
     var amountType by remember {
-        mutableStateOf("")
+        mutableStateOf("pills")
     }
 
     var howLong by remember {
-        mutableStateOf("")
+        mutableStateOf("0")
     }
     var howLongType by remember {
-        mutableStateOf("")
+        mutableStateOf("days")
     }
 
     val options1 = listOf("pills", "ml", "tbsp")
@@ -94,7 +98,9 @@ fun AddMedicine(modifier: Modifier = Modifier) {
 
     Column(modifier = Modifier.fillMaxSize()) {
         IconBox(
-            onClick = {},
+            onClick = {
+                navController.popBackStack()
+            },
             modifier = Modifier
                 .padding(start = 28.dp, top = 28.dp, bottom = 12.dp)
                 .size(48.dp),
@@ -252,7 +258,13 @@ fun AddMedicine(modifier: Modifier = Modifier) {
                         time = time
                     )
                 )
-                Toast.makeText(mContext, status, Toast.LENGTH_SHORT).show()
+                if(status.equals("Successful!!")) {
+                    Toast.makeText(mContext, status, Toast.LENGTH_SHORT).show()
+                    navController.navigate(Screen.HomeScreen.route)
+                }
+                else{
+                    Toast.makeText(mContext, status, Toast.LENGTH_SHORT).show()
+                }
             },
             modifier = Modifier
                 .padding(start = 28.dp, end = 28.dp, top = 40.dp)
@@ -306,7 +318,7 @@ fun AddMedicine(modifier: Modifier = Modifier) {
 @Composable
 private fun ViewAddMedicine() {
     Surface(modifier = Modifier.fillMaxSize()) {
-        AddMedicine()
+//        AddMedicine()
     }
 }
 

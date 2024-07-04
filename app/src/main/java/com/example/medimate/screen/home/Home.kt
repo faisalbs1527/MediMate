@@ -33,7 +33,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import com.example.medimate.R
+import com.example.medimate.Screen
 import com.example.medimate.component.HomeBanner
 import com.example.medimate.component.IconBox
 import com.example.medimate.component.Itemcard
@@ -42,7 +44,7 @@ import com.example.medimate.ui.theme.green80
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen(modifier: Modifier = Modifier) {
+fun HomeScreen(navController: NavController) {
 
     val viewModel: homeViewModel = hiltViewModel()
     LaunchedEffect(key1 = Unit) {
@@ -72,7 +74,9 @@ fun HomeScreen(modifier: Modifier = Modifier) {
                     onClick = { selectedItem.value = 1 },
                     icon = {
                         IconBox(
-                            onClick = {},
+                            onClick = {
+                                navController.navigate(Screen.ReminderScreen.route)
+                            },
                             modifier = Modifier.size(56.dp),
                             colorContainer = green80,
                             iconVector = Icons.Filled.Add,
@@ -124,11 +128,13 @@ fun HomeScreen(modifier: Modifier = Modifier) {
                 fontWeight = FontWeight(500)
             )
             LazyColumn(modifier = Modifier.padding(top = 8.dp, bottom = 8.dp)) {
-                if(reminderList!=null){
-                    items(reminderList!!){ reminder->
-                        Itemcard(medicineName = reminder.pillName,
+                if (reminderList != null) {
+                    items(reminderList!!) { reminder ->
+                        Itemcard(
+                            medicineName = reminder.pillName,
                             reminderTime = reminder.time,
-                            status = "Pending")
+                            status = "Pending"
+                        )
                     }
                 }
             }
@@ -140,6 +146,6 @@ fun HomeScreen(modifier: Modifier = Modifier) {
 @Composable
 private fun ViewHomeScreen() {
     Surface(modifier = Modifier.fillMaxSize()) {
-        HomeScreen()
+//        HomeScreen()
     }
 }
