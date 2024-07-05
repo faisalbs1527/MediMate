@@ -1,5 +1,7 @@
 package com.example.medimate.screen.home
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -41,7 +43,9 @@ import com.example.medimate.component.IconBox
 import com.example.medimate.component.Itemcard
 import com.example.medimate.ui.theme.black80
 import com.example.medimate.ui.theme.green80
+import com.example.medimate.utils.timeComparison
 
+@RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(navController: NavController) {
@@ -133,7 +137,7 @@ fun HomeScreen(navController: NavController) {
                         Itemcard(
                             medicineName = reminder.pillName,
                             reminderTime = reminder.time,
-                            status = "Pending"
+                            status = timeComparison(reminder.time)
                         )
                     }
                 }
