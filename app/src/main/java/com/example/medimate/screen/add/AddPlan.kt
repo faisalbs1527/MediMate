@@ -269,6 +269,7 @@ fun AddMedicine(navController: NavController) {
             modifier = Modifier
                 .padding(start = 28.dp, end = 28.dp, top = 40.dp)
                 .size(width = 340.dp, height = 56.dp),
+            text = "Done"
         )
     }
 

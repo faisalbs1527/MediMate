@@ -70,6 +70,7 @@ fun IconBox(
 fun CustomButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
+    text : String
 ) {
     Card(
         modifier = modifier.clickable {
@@ -82,7 +83,7 @@ fun CustomButton(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text(text = "Done",
+            Text(text = text,
                 fontSize = 17.sp,
                 color = Color.White,
                 fontWeight = FontWeight(500)
@@ -108,7 +109,8 @@ private fun ViewIconBox() {
                 onClick = {},
                 modifier = Modifier
                     .padding(top = 16.dp)
-                    .size(width = 300.dp, height = 50.dp)
+                    .size(width = 300.dp, height = 50.dp),
+                text = "Done"
             )
         }
     }
